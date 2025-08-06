@@ -1,0 +1,22 @@
+﻿body {
+    font-family: 'Roboto', sans-serif; 
+    font-size: .75rem; 
+    line-height: 1.5; 
+    font-weight: normal; 
+}
+
+.header__main-area .row {
+    height: 110px;
+}
+
+.header__top-nav-left .icon-location::before,
+.header__top-nav-right .minicart::before {
+    background: #373737;
+    content: "";
+    height: 1.25rem;
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: .0625rem;
+}

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Category>
+
+<form method="get" asp-action="Filter" asp-controller="Home">
+    <label>Loại da:</label>
+    <select name="skinType">
+        <option value="">Tất cả</option>
+        @foreach (var category in Model.Where(c => c.CategoryType == "SkinType"))
+        {
+            <option value="@category.CategoryType">@category.CategoryType</option>
+        }
+    </select>
+
+    <label>Tình trạng da:</label>
+    <select name="skinCondition">
+        <option value="">Tất cả</option>
+        @foreach (var category in Model.Where(c => c.CategorySkin == "SkinCondition"))
+        {
+            <option value="@category.CategoryType">@category.CategoryType</option>
+        }
+    </select>
+
+    <button type="submit">Lọc</button>
+</form>

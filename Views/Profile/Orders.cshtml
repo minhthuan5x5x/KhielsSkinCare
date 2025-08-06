@@ -1,0 +1,97 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["CurrentPage"] = "Orders";
+}
+@model KhielsSkincare.Models.AppUser
+
+
+<style>
+    .search-btn {
+        background-color: #c1d0f6;
+        height: 28px;
+        width: 28px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 3px;
+        border-radius: 999px;
+        border: 0;
+        padding: 0;
+        right: 0;
+    }
+
+    .search-bar {
+        height: 100%;
+        border: 0;
+        padding: 6px 70px 6px 12px;
+        color: #666;
+        border-radius: 34px;
+    }
+</style>
+
+<div style="background-color: #ededed;">
+    <div class="container pt-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-black">Trang Chủ</a></li>
+                <li class="breadcrumb-item activetext-black" aria-current="page">Cá nhân</li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="col-auto">
+                @{
+                    Html.RenderPartial("_NavigationProfile", Model);
+                }
+            </div>
+            <div class="col">
+                <div class="d-flex justify-content-between">
+                    <p class="m-0 align-content-center fw-500">Đơn hàng của tôi</p>
+                    <div class="position-relative   ">
+                        <button class="search-btn">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #1250dc;"></i>
+                        </button>
+                        <input class="search-bar" type="text" placeholder="Tìm kiếm đơn hàng..." value="">
+                    </div>
+                </div>
+                <ul class="nav mb-3 bg-white d-flex justify-content-around mt-4" style="border-radius: 12px 12px 0 0;">
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link active" href="#" aria-selected="true">Tất cả</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link" href="#" aria-selected="false">Đang xử lý</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link" href="#" aria-selected="false">Đang giao</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link" href="#" aria-selected="false">Đã giao</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link" href="#" aria-selected="false">Đã hủy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navLinks = document.querySelectorAll('.nav-item .custom-nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); // Ngăn không cho trang bị reload
+                // Xóa lớp 'active-border' khỏi tất cả các <li>
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active-border');
+                });
+                // Thêm lớp 'active-border' cho <li> chứa thẻ <a> đang được nhấn
+                this.parentElement.classList.add('active-border');
+                // Đặt các tab khác thành không active
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Đặt tab hiện tại là active
+                this.classList.add('active');
+            });
+        });
+    });
+</script>

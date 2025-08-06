@@ -1,0 +1,662 @@
+﻿﻿@using KhielsSkincare.Extensions
+@model KhielsSkincare.Models.ViewModels.ProductDetailViewModel
+}
+<style>
+    .vertical-slider {
+        width: 70px;
+        max-height: 340px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .slider-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .slider-images {
+        transition: transform 0.5s ease-in-out;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .slider-images img {
+            width: 100%;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+    .selected-variation {
+        border: 1px solid #00a3ff !important;
+        background: #f7fcff;
+    }
+
+    .selected-item-slider {
+        border: 1px solid #000000 !important;
+    }
+
+    /*    //star
+        */ .c-rating-input__field {
+        display: flex;
+        gap: 5px;
+    }
+
+    .star {
+        font-size: 30px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+        .star.selected,
+        .star.hovered {
+            color: #f1c40f;
+        }
+</style>
+
+<div class="main-content container pb-5">
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-black">Trang Chủ</a></li>
+            <li class="breadcrumb-item active text-black" aria-current="page">Sản phẩm bán chạy</li>
+        </ol>
+    </nav>
+
+    <div class="c-product__inner row row-cols-2">
+        <div class="col d-flex justify-content-around">
+            <div class="vertical-slider">
+                <div onclick="moveUp()">
+                    <i class="fa-solid fa-chevron-up text-black" style="cursor: pointer;"></i>
+                </div>
+
+                <div class="slider-wrapper">
+                    <div id="sliderImages" class="slider-images">
+                        <img class="border" src="~/images/product/@Model.ProductDetail.ImageUrl" alt="@Model.ProductDetail.ProductName" onclick="imageClicked(this)">
+                        <img class="border" src="~/images/product/@Model.ProductDetail.Image1" alt="@Model.ProductDetail.ProductName" onclick="imageClicked(this)">
+                        <img class="border" src="~/images/product/@Model.ProductDetail.Image2" alt="@Model.ProductDetail.ProductName" onclick="imageClicked(this)">
+                        <img class="border" src="~/images/product/@Model.ProductDetail.Image3" alt="@Model.ProductDetail.ProductName" onclick="imageClicked(this)">
+                        <img class="border" src="~/images/product/@Model.ProductDetail.Image4" alt="@Model.ProductDetail.ProductName" onclick="imageClicked(this)">
+                        <img class="border" src="~/images/product/@Model.ProductDetail.Image5" alt="@Model.ProductDetail.ProductName" onclick="imageClicked(this)">
+                    </div>
+                </div>
+
+                <div onclick="moveDown()">
+                    <i class="fa-solid fa-chevron-down text-black" style="cursor: pointer"></i>
+                </div>
+            </div>
+            <div id="mainImageContainer">
+                <img id="mainImage" style="width: 465px; height: 465px;" src="~/images/product/@Model.ProductDetail.ImageUrl" alt="@Model.ProductDetail.ProductName" />
+            </div>
+        </div>
+        <div class="product-info col">
+            <div class="product-details">
+                <h3 class="product-title font-serif fw-bold">@Model.ProductDetail.ProductName</h3>
+                <span id="main-product-price" class="font-18 fw-500">@Model.ProductDetail.ProductVariants.First().Price.ToVnd()</span>
+                <div class="c-product-main__rating h-text-justify-content-center h-text-justify-content-start-for-large">
+                    <a class="c-rating" href="#ratings" aria-label="Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution rating is 4 out of 5 stars rated by 4 users." title="4 out of 5" data-component="global/EventTrigger" data-analytics="{&quot;category&quot;:&quot;product detail page&quot;,&quot;action&quot;:&quot;write review&quot;,&quot;label&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;,&quot;extraData&quot;:{&quot;event_name&quot;:&quot;write_review&quot;,&quot;product_info&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;}}" data-component-options="{&quot;event&quot;:&quot;click&quot;,&quot;skipPreventDefault&quot;:true}" data-component-id="l_10761rgr4w2">
+                        <span class="c-rating__star m-active"></span>  <span class="c-rating__star m-active"></span>
+                        <span class="c-rating__star m-active"></span>  <span class="c-rating__star m-active"></span>
+                        <span class="c-rating__star"><span class="c-rating__star m-active" style="width:75%"></span></span>
+                    </a>
+                    <div class="c-product-main__review" data-component="global/EventTrigger" data-analytics="{&quot;category&quot;:&quot;product detail page&quot;,&quot;action&quot;:&quot;write review&quot;,&quot;label&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;,&quot;extraData&quot;:{&quot;event_name&quot;:&quot;write_review&quot;,&quot;product_info&quot;:&quot;serum sáng da mờ thâm vitamin c kiehl's clearly corrective dark spot solution::3605972549082&quot;}}" data-component-options="{&quot;event&quot;:&quot;click&quot;,&quot;skipPreventDefault&quot;:true}" data-component-id="l_tkvg0y16mzc">
+                        <a class="c-product-main__review-count" href="#ratings" aria-label="Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution rating is 4 out of 5 stars rated by 4 users.">
+
+                        </a>
+                        <span class="c-product-main__review-highlight-icon">
+
+                        </span>
+                        <a class="c-product-main__review-highlight-total" href="#ratings">
+                            (4 reviews)
+
+                        </a>
+                    </div>
+                </div>
+                <h6 class="product-description pt-3 pb-3 fw-normal">@Model.ProductDetail.Description</h6>
+            </div>
+            <div class="product-variations">
+                <div class="row">
+                    @foreach (var variant in Model.ProductDetail.ProductVariants)
+                    {
+                        <div class="col-auto col-lg-4 mb-4 text-center font-12">
+                            <a class="variation-item @(Model.ProductDetail.ProductVariants.First() == variant ? "selected-variation" : "") d-block border text-decoration-none"
+                           href="#" data-price="@variant.Price.ToVnd()">
+                                <span class="variation-size text-black fw-500">@variant.Size</span>
+                                <div class="variation-price text-center">
+                                    <span class="d-block text-dark opacity-75">@variant.Price.ToVnd()</span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+                @Html.AntiForgeryToken()
+                <div class="d-flex">
+                    <div class="input-group" style="width: 120px;">
+                        <!-- Nút giảm số lượng -->
+                        <button class="btn btn-outline-secondary rounded-0 border-dark border border-end-0 decrease-quantity"
+                                type="button" aria-label="Giảm số lượng"
+                                data-id="@Model.ProductDetail.ProductVariants.First().ProductVariantId">
+                            −
+                        </button>
+
+                        <!-- Trường nhập số lượng -->
+                        <input type="number" class="form-control text-center border-top border-bottom border-0 border-dark bg-white"
+                               id="quantity-@Model.ProductDetail.ProductVariants.First().ProductVariantId" name="quantity" value="1" min="1" max="5" aria-label="Số lượng">
+
+
+                        <!-- Nút tăng số lượng -->
+                        <button class="btn btn-outline-secondary rounded-0 border-dark border border-start-0 increase-quantity"
+                                type="button" aria-label="Tăng số lượng"
+                                data-id="@Model.ProductDetail.ProductVariants.First().ProductVariantId">
+                            +
+                        </button>
+                    </div>
+
+                    <div class="ms-3 me-5">
+                        <button type="button" class="rounded-0 btn btn-outline-dark add-to-cart"
+                                data-product-id="@Model.ProductDetail.ProductId"
+                                data-variant-id="@Model.ProductDetail.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                                onclick="addToCart(this)">
+                            THÊM VÀO GIỎ HÀNG
+                        </button>
+                    </div>
+
+                    <!-- Nút thêm vào yêu thích -->
+                    <button type="button" class="btn btn-outline-danger"
+                            data-product-id="@Model.ProductDetail.ProductId"
+                            data-variant-id="@Model.ProductDetail.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                            style="width: fit-content;"
+                            onclick="addToFavorite(this)">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="review-content container">
+    <h2 class="fw-500 font-serif text-center pt-5 pb-5 border-top border-bottom text-uppercase m-0">Gợi Ý Sản Phẩm Liên Quan</h2>
+    <div class="product-slide row row-cols-1 row-cols-md-2 row-cols-lg-4 ">
+        @foreach (var product in Model.RelatedProducts)
+        {
+            <div class="product col mb-4">
+                <div class="card border-0">
+                    <a asp-action="Details" asp-controller="Product" asp-route-Id="@product.ProductId">
+                        <img src="~/images/product/@product.ImageUrl" alt="@product.ProductName" class="card-img-top" />
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold font-serif">@product.ProductName</h5>
+                            <p class="card-text fst-italic font-14 font-serif">@product.Description</p>
+                        </div>
+                    </a>
+                    <div class="form-group d-flex justify-content-center align-items-center">
+                        <label for="dropdownMenu-@product.ProductId" class="font-12 me-2">Chọn dung tích:</label>
+                        <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@product.ProductId" data-product-id="@product.ProductId">
+                            @foreach (var variant in product.ProductVariants)
+                            {
+                                <option value="@variant.ProductVariantId" data-price="@variant.Price.ToVnd())">
+                                    @variant.Size
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Hiển thị giá theo dung tích được chọn -->
+                    <div class="font-18 text-center fw-500 pt-2 pb-2">
+                        <span class="priceDisplay" id="priceDisplay-@product.ProductId">
+                            @(product.ProductVariants.FirstOrDefault()?.Price.ToVnd())
+                        </span>
+                    </div>
+                    <button class="btn btn-outline-dark add-to-cart"
+                        type="button"
+                        data-product-id="@product.ProductId"
+                        data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                        onclick="addToCart(this)">
+                        THÊM VÀO GIỎ HÀNG
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+
+
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    <h4 class="fw-normal font-serif p-3 m-0">Giới Thiệu Chung</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="container">
+                        <span>Thông tin giới thiệu về sản phẩm sẽ được đặt ở đây.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                    <h4 class="fw-normal font-serif p-3 m-0">Công Dụng Sản Phẩm</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <span><strong>Công dụng của sản phẩm được mô tả ở đây.</strong></span>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                    <h4 class="fw-normal font-serif p-3 m-0">Thành Phần Chính</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <span><strong>Danh sách các thành phần chính của sản phẩm sẽ được hiển thị tại đây.</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                    <h4 class="fw-normal font-serif p-3 m-0">Đánh giá sản phẩm</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+                <div class="accordion-body" id="reviewList">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div class="review-item border-bottom mt-3">
+                            <div class="m-0 d-flex align-items-center">
+                                <div class="me-3">
+                                    <img class="mx-auto" style="width: 50px;" src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/avatar-profile.svg">
+                                </div>
+                                <p class="m-0 fw-500">@(review.Name ?? "Ẩn danh")<span class="fw-normal"> - @review.Rating <i class="fa-solid fa-star" style="color: #FFD43B;"></i></span></p>
+                            </div>
+                            <p class="m-0" style="padding-left: 67px;">@review.Comment</p>
+                            <p style="text-align: right; font-size: 12px; margin: 0;"><em>@review.CreatedAt.ToString("dd/MM/yyyy")</em></p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+                <button class="accordion-body btn btn-secondary" onclick="checkLoginAndOpenModal()">
+                    Viết đánh giá
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal đánh giá-->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Sign Up Your User Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- MultiStep Form -->
+                <div class="container-fluid">
+                    <div class="row justify-content-center mt-0">
+                        <div class="col-12 text-center p-0 mt-3 mb-2">
+                            <form id="msform">
+                                <!-- fieldsets -->
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title">ReView</h2>
+
+                                        <input type="hidden" id="productId" value="@Model.ProductDetail.ProductId" />
+
+
+                                        <div class="c-rating-input__field">
+                                            <span class="star" data-value="1">&#9733;</span>
+                                            <span class="star" data-value="2">&#9733;</span>
+                                            <span class="star" data-value="3">&#9733;</span>
+                                            <span class="star" data-value="4">&#9733;</span>
+                                            <span class="star" data-value="5">&#9733;</span>
+                                            <input type="hidden" name="rating" id="rating" value="0">
+                                        </div>
+
+                                        <textarea class="c-review-form__textarea" name="comment"
+                                                  required placeholder="Hãy viết nhận xét của bạn tại đây..."></textarea>
+
+                                        <input type="radio" name="nametype" value="fullname" id="nametype_fullname" required>
+                                        <label for="nametype_fullname">Dùng tên/họ của tôi</label>
+                                        <input type="radio" name="nametype" value="nickname" id="nametype_nickname">
+                                        <label for="nametype_nickname">Dùng biệt danh của tôi</label>
+                                        <input type="radio" name="nametype" value="none" id="nametype_none">
+                                        <label for="nametype_none">Ẩn danh</label>
+                                        <div class="c-field c-text-field nickname-input" id="nicknameField" style="display: none;">
+                                            <input type="text" name="nickname" placeholder="Nickname">
+                                        </div>
+
+                                    </div>
+                                    <button type="submit" id="submitReviewBtn" class="next action-button">Đăng Đánh Giá</button>
+                                </fieldset>
+
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title text-center">Thành công!</h2>
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-3">
+                                                <img src="https://img.icons8.com/color/96/000000/ok--v2.png" class="fit-image">
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-7 text-center">
+                                                <h5>Đánh Giá thành công</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        function checkLoginAndOpenModal() {
+            // Gọi một API để kiểm tra trạng thái đăng nhập (ví dụ: dùng Ajax)
+            fetch('/Account/IsLoggedIn') // Đường dẫn đến action kiểm tra đăng nhập
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isLoggedIn) {
+                        // Mở modal nếu người dùng đã đăng nhập
+                        $('#reviewModal').modal('show');
+                    } else {
+                        // Lưu URL hiện tại để gửi đi
+                        const returnUrl = encodeURIComponent(window.location.pathname); // Lưu đường dẫn hiện tại
+                        // Chuyển hướng đến trang đăng nhập với returnUrl
+                        window.location.href = '/Account/Login?returnUrl=' + returnUrl; // Thêm returnUrl vào query string
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        $(document).ready(function () {
+
+
+
+            // Hiển thị trường nickname nếu người dùng chọn "Dùng biệt danh của tôi"
+            $('input[name="nametype"]').change(function () {
+                if ($(this).val() === 'nickname') {
+                    $('#nicknameField').show();
+                } else {
+                    $('#nicknameField').hide();
+                }
+            });
+
+            // Xử lý khi người dùng nhấn vào một ngôi sao
+            $('.star').on('click', function () {
+                var rating = $(this).data('value');
+                $('#rating').val(rating);
+
+                // Tô màu cho các ngôi sao đã chọn
+                $('.star').each(function () {
+                    if ($(this).data('value') <= rating) {
+                        $(this).addClass('selected');
+                    } else {
+                        $(this).removeClass('selected');
+                    }
+                });
+            });
+
+            // Gửi form đánh giá bằng AJAX
+            $('#msform').on('submit', function (e) {
+                e.preventDefault();
+
+                var formData = {
+                    rating: $('#rating').val(),
+                    comment: $('textarea[name="comment"]').val(),
+                    nametype: $('input[name="nametype"]:checked').val(),
+                    nickname: $('input[name="nickname"]').val(),
+                    productId: $('#productId').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Product/AddReview', // URL tới phương thức xử lý đánh giá trong Controller
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            // Hiển thị bước thành công
+                            $('#msform fieldset').first().hide();
+                            $('#msform fieldset').last().show();
+
+                            // Xác định tên hiển thị dựa trên lựa chọn của người dùng
+                            let displayName;
+                            if (formData.nametype === 'nickname') {
+                                displayName = formData.nickname || 'Ẩn danh';
+                            } else if (formData.nametype === 'fullname') {
+                                displayName = User.Identity.Name || 'Ẩn danh'; // Sử dụng User.Identity.Name
+                            } else {
+                                displayName = 'Ẩn danh';
+                            }
+
+                            // Cập nhật danh sách đánh giá
+                            $('#reviews').append(`
+                                            <div>
+                                                <img class="mx-auto" src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/avatar-profile.svg">
+                                            </div>
+                                            <div class="review-item">
+                                                        <p class="m-0"><strong>${displayName}</strong> - ${formData.rating} <i class="fa-solid fa-star" style="color: #FFD43B;"></i></p>
+                                                <p class="m-0">${formData.comment}</p>
+                                                <p style="float: right; font-size: 12px;"><em>${new Date().toLocaleDateString()}</em></p>
+                                            </div>
+                                        `);
+                            alert('Thành công');
+                            $('#progressbar li#confirm').addClass('active'); // Hiển thị bước hoàn tất
+                            window.location.href = '/Product/Details';
+                        } else {
+                            alert('Có lỗi xảy ra: ' + response.error);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra trong quá trình gửi đánh giá.');
+                    }
+                });
+            });
+        });
+
+        //$(document).ready(function () {
+        //    $('#reviewForm').submit(function (event) {
+        //        event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+
+        //        var productId = $('#ProductId').val();
+        //        var name = $('#Name').val();
+        //        var email = $('#Email').val();
+        //        var rating = $('#Rating').val();
+        //        var comment = $('#Comment').val();
+
+        //        // Gửi yêu cầu AJAX đến controller
+        //        $.ajax({
+        //            url: '@Url.Action("Create", "Review")',
+        //            type: 'POST',
+        //            data: {
+        //                ProductId: productId,
+        //                Name: name,
+        //                Email: email,
+        //                Rating: rating,
+        //                Comment: comment
+        //            },
+        //            success: function (response) {
+        //                $('#reviewModal').modal('hide'); // Đóng modal
+        //                location.reload(); // Tải lại trang để hiển thị đánh giá mới
+        //            },
+        //            error: function (xhr, status, error) {
+        //                alert('Có lỗi xảy ra: ' + error);
+        //            }
+        //        });
+        //    });
+        //});
+
+
+
+        //document.querySelectorAll('.star').forEach(star => {
+        //    star.addEventListener('click', function () {
+        //        const ratingValue = this.getAttribute('data-value');
+        //        document.getElementById('rating').value = ratingValue;
+
+        //        document.querySelectorAll('.star').forEach(s => {
+        //            s.style.color = s.getAttribute('data-value') <= ratingValue ? 'gold' : 'gray';
+        //        });
+        //    });
+        //});
+
+
+        $(document).ready(function () {
+            // Xử lý nút tăng số lượng
+            $('.btn-outline-secondary[aria-label="Tăng số lượng"]').on('click', function () {
+                var quantityInput = $(this).siblings('input[name="quantity"]');
+                var currentValue = parseInt(quantityInput.val());
+
+                // Kiểm tra giới hạn trên (max = 5)
+                if (currentValue < 5) {
+                    quantityInput.val(currentValue + 1);
+                    // Bỏ trạng thái disabled của nút giảm nếu số lượng > 1
+                    $(this).siblings('[aria-label="Giảm số lượng"]').prop('disabled', false);
+                }
+            });
+
+            // Xử lý nút giảm số lượng
+            $('.btn-outline-secondary[aria-label="Giảm số lượng"]').on('click', function () {
+                var quantityInput = $(this).siblings('input[name="quantity"]');
+                var currentValue = parseInt(quantityInput.val());
+
+                // Giảm số lượng nếu > 1
+                if (currentValue > 1) {
+                    quantityInput.val(currentValue - 1);
+                }
+
+                // Nếu số lượng = 1, vô hiệu hóa nút giảm
+                if (parseInt(quantityInput.val()) === 1) {
+                    $(this).prop('disabled', true);
+                }
+            });
+        });
+
+        let currentIndex = 0;
+
+        function moveUp() {
+            const images = document.querySelectorAll('#sliderImages img');
+            if (currentIndex < images.length - 1) {
+                currentIndex++;
+                updateSlider();
+            }
+        }
+
+        function moveDown() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSlider();
+            }
+        }
+
+        function updateSlider() {
+            const images = document.querySelectorAll('#sliderImages img');
+            const offset = currentIndex * -1 * 70; // Thay đổi offset tùy theo chiều cao hình ảnh
+            document.getElementById('sliderImages').style.transform = `translateY(${offset}px)`;
+        }
+
+        function imageClicked(image) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = image.src; // Cập nhật hình ảnh chính khi hình nhỏ được nhấn
+        }
+
+        document.querySelectorAll('.variation-item').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.variation-item').forEach(variant => {
+                    variant.classList.remove('selected-variation');
+                });
+                this.classList.add('selected-variation');
+                document.getElementById('main-product-price').textContent = this.getAttribute('data-price');
+                document.querySelector('.add-to-cart').setAttribute('data-price', this.getAttribute('data-price'));
+                document.querySelector('.add-to-cart').setAttribute('data-size', this.querySelector('.variation-size').textContent);
+            });
+        });
+
+        // Thêm sản phẩm vào giỏ hàng
+        function addToCart(button) {
+            var productId = $(button).data('product-id');
+            var variantId = $(button).data('variant-id');
+            var quantity = $('#quantity-' + variantId).val(); // Lấy số lượng từ input
+            console.log("Thêm vào giỏ hàng:", productId, variantId, quantity); // Kiểm tra giá trị console
+
+
+            $.ajax({
+                url: '@Url.Action("Add", "Cart")', // Đường dẫn đến action thêm sản phẩm vào giỏ hàng
+                type: 'POST',
+                data: {
+                    Id: productId,
+                    variantId: variantId,
+                    quantity: quantity // Gửi số lượng sản phẩm
+                },
+                success: function (response) {
+                    alert("Sản phẩm đã được thêm vào giỏ hàng!");
+                    // Cập nhật giao diện giỏ hàng nếu cần
+                    updateCartDisplay();
+                },
+                error: function (xhr, status, error) {
+                    alert("Đã có lỗi xảy ra: " + xhr.responseText);
+                }
+            });
+        }
+
+        // Thêm sản phẩm yêu thích
+        function addToFavorite(button) {
+            const productId = button.getAttribute('data-product-id');
+            const variantId = button.getAttribute('data-variant-id');
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+            const token = tokenElement ? tokenElement.value : '';
+
+            const data = {
+                ProductId: productId,
+                ProductVariantId: variantId
+            };
+
+            fetch('/Favorite/AddToFavorite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert("Đã thêm vào danh sách yêu thích");
+                        button.classList.add("added"); // Thay đổi kiểu dáng nút nếu cần
+                    } else {
+                        alert("Có lỗi xảy ra khi thêm vào danh sách yêu thích: " + result.message);
+                    }
+                })
+                .catch(error => console.error("Yêu cầu thêm vào danh sách yêu thích không thành công:", error));
+        }
+
+
+    </script>
+}

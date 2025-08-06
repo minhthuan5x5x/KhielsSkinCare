@@ -1,0 +1,61 @@
+﻿@model User
+@{
+	Layout = null;
+	ViewData["Title"] = "Register";
+}
+
+<link rel="stylesheet" href="@Url.Content("~/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css")">
+<link rel="stylesheet" href="@Url.Content("~/css/style.css")">
+
+<div class="wrapper" style="background-image: url('~/images/bg-registration-form-1.jpg');">
+	<div class="inner">
+		<div class="image-holder">
+			<img src="~/images/registration-form-1.jpg" alt="HInh">
+		</div>
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<form asp-action="Register" asp-controller="Account">
+			<h3>Registration Form</h3>
+			
+			<div class="form-wrapper">
+				<label>UserName</label>
+				<input asp-for="UserName" class="form-control">
+				<span asp-validation-for="UserName" class="text-danger"></span>
+				<i class="zmdi zmdi-account"></i>
+			</div>
+			<div class="form-wrapper">
+				<label>Email</label>
+				<input asp-for="Email" class="form-control">
+				<span asp-validation-for="Email" class="text-danger"></span>
+				<i class="zmdi zmdi-email"></i>
+			</div>			
+			<div class="form-wrapper">
+				<label>PassWord</label>
+				<input asp-for="Password" class="form-control">
+				<span asp-validation-for="Password" class="text-danger"></span>				
+			</div>
+			<div class="form-wrapper">
+                <label>Confirm Password</label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+			<a asp-action="Login" asp-controller="Account" class="btn" style="text-decoration: none;">
+				<i class="zmdi zmdi-arrow-left"></i>
+				Login
+			</a>
+			<button>
+				Register
+				<i class="zmdi zmdi-arrow-right"></i>
+			</button>
+			
+		</form>
+	</div>
+</div>
+
+@*<div class="form-group">
+				<input type="text" placeholder="First Name" class="form-control">
+				<input type="text" placeholder="Last Name" class="form-control">
+			</div>*@
+@*<div class="form-wrapper">
+				<input type="password" placeholder="Confirm Password" class="form-control">
+				<i class="zmdi zmdi-lock"></i>
+			</div>*@

@@ -1,0 +1,436 @@
+﻿@model CheckoutViewModel
+@using System.Globalization
+@using KhielsSkincare.Extensions
+@using KhielsSkincare.Models.ViewModels;
+
+<div class="container pt-5 pb-5 position-relative" style="margin-bottom: 150px;">
+    @if (Model.CartItems.Count > 0)
+    {
+        <h2 class="font-serif pb-5">
+            Giỏ Hàng Của Bạn (<span id="cart-count">@Model.CartItems.Count()</span> sản phẩm)
+        </h2>
+        <div class="paying__content row">
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="paying__content-left col-8">
+                    <div class="cart-items row-cols-1">
+                        <div class="cart-item col d-flex p-3 border-top border-1" 
+                             id="cart-item-@item.ProductVariantId" 
+                             data-product-id="@item.ProductId"
+                             data-product-variant-id="@item.ProductVariantId">
+                            <img src="~/images/product/@item.Image" alt="@item.ProductName" style="width: 150px; height: 150px;" />
+                            <div class="cart-detail ps-2 w-100 text-start">
+                                <h4 class="font-serif w-75">@item.ProductName</h4>
+                                <div id="price-@item.ProductVariantId" style="display:none">@item.Price</div>
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <div class="quantity d-flex align-items-center">
+                                        <label class="font-12 me-2">Số lượng:</label>
+                                        <button class="btn btn-outline-secondary btn-decrease" data-id="@item.ProductVariantId">-</button>
+                                        <input type="text" class="font-16 text-center" id="quantity-@item.ProductVariantId" value="@item.Quantity" autocomplete="off" size="2" @(item.Quantity == 1 ? "style='display:none;'" : "") />
+                                        <button class="btn btn-outline-secondary btn-increase" data-id="@item.ProductVariantId">+</button>
+                                    </div>
+
+                                    <div class="font-16 text-center fw-500" id="total-@item.ProductVariantId">
+                                        @((item.Quantity * item.Price).ToVnd())
+                                    </div>
+                                </div>
+
+                                <div class="form-group d-flex align-items-center mt-2">
+                                    <label class="font-12 me-2">Dung tích:</label>
+                                    <h3 class="dropdownMenu form-control w-25 rounded-0">@item.Size</h3>
+                                </div>
+                            </div>
+                            <button class="close-cart border-0 bg-white" style="height: fit-content; margin-top: -16px;">
+                                <a class="fa-solid fa-xmark" style="font-size: 12px;" aria-hidden="true"
+                                   href="javascript:void(0);"
+                                   onclick="removeItem(event, @item.ProductVariantId)"></a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="paying__content-right bg-secondary bg-opacity-25 col-4 p-3 position-absolute end-0">
+                <div class="d-flex justify-content-between mb-2">
+                    <div class="title opacity-75 fw-500">Tạm tính</div>
+                    <div class="provisional-price fw-500" id="provisional-price">
+                        @Model.ProvisionalAmount.ToVnd()
+                    </div> 
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <div class="title opacity-75 fw-500">Phí ship</div>
+                    <div class="shipping-fee fw-500" id="shipping-fee">
+                        Free Ship
+                    </div> 
+                </div>
+                <div class="content-discount bg-white p-3">
+                    <div class="fw-500 font-14 mb-2">Mã khuyến mãi</div>
+                    <div class="input-group d-flex">
+                        <input type="text" id="discount-code" class="form-control rounded-0" placeholder="Nhập mã khuyến mãi của bạn" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-dark rounded-0" type="button" id="button-apply-discount">ÁP DỤNG</button>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <div class="title opacity-75 fw-500">Giảm giá</div>
+                        <div class="discount-amount fw-500" id="discount-amount">
+                            @Model.DiscountValue
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="title opacity-75 fw-500">Tổng</div>
+                    <div id="grand-total" class="final-price fw-500">
+                        @Model.GrandTotal.ToVnd()
+                    </div>
+                </div>
+                <a href="javascript:void(0);" onclick="checkLoginAndOpenModal()" class="btn col-12 btn btn-outline-dark fw-bold rounded-0 mt-3 mb-3">
+                    TIẾN HÀNH THANH TOÁN
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container-fluid  mt-100">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body cart">
+                            <div class="col-sm-12 empty-cart-cls text-center">
+                                <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                                <h3><strong>Your Cart is Empty</strong></h3>
+                                <h4>Add something to make me happy :)</h4>
+                                <a asp-action="Index" asp-controller="Home" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@{
+    var isAuthenticated = User.Identity.IsAuthenticated;
+}
+<!-- Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Sign Up Your User Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- MultiStep Form -->
+                <div class="container-fluid">
+                    <div class="row justify-content-center mt-0">
+                        <div class="col-12 text-center p-0 mt-3 mb-2">
+                            <form id="msform">
+                                <!-- progressbar -->
+                                <ul id="progressbar">
+                                    <li class="active" id="account"><strong>Thanh Toán</strong></li>
+                                    <li id="personal"><strong>Thông tin giao hàng</strong></li>
+                                    <li id="payment"><strong>Thông tin thanh toán</strong></li>
+                                    <li id="confirm"><strong>Hoàn tất</strong></li>
+                                </ul>
+                                <!-- fieldsets -->
+                                <fieldset>
+                                    <div class="form-card">
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-3">
+                                                <img src="https://img.icons8.com/plasticine/100/shipped.png" class="fit-image">
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-7 text-center">
+                                                <h5>Thanh toán cho đơn hàng của bạn</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="button" name="next" class="next action-button" value="Xác Nhận" />
+                                </fieldset>
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title">Thông tin Giao hàng</h2>
+                                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="Họ" required />
+                                        <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Tên" required />
+                                        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Số điện thoại" required />
+                                        <input type="text" class="form-control" id="AddressLine" name="AddressLine" placeholder="Địa chỉ" required />
+                                        <input type="text" class="form-control" id="City" name="City" placeholder="Thành phố" required />
+                                    </div>
+                                    <input type="button" name="previous" class="previous action-button-previous" value="Quay lại" />
+                                    <input type="button" name="next" class="next action-button" value="Bước tiếp theo" />
+                                </fieldset>
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title">Thông tin Thanh toán</h2>
+                                        <div class="radio-group">
+                                            <div class="radio" data-value="cash" onclick="selectPaymentMethod(this)" aria-label="Thanh toán bằng tiền mặt">
+                                                <img src="~/images/icons8-cash-payment-100.png" width="100px" height="100px" alt="Tiền mặt" />
+                                            </div>
+                                            <div class="radio" data-value="payOS" onclick="selectPaymentMethod(this)" aria-label="Thanh toán trực tuyến">
+                                                <img src="~/images/icons8-qr-code-100.png" width="100px" height="100px" alt="QR" />
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" id="SelectedPaymentMethod" name="paymentMethod" />
+                                    </div>
+                                    <input type="button" name="previous" class="previous action-button-previous" value="Quay lại" />
+                                    <input type="button" id="confirmPayment" class="next action-button" value="Xác nhận" />
+                                </fieldset>
+
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title text-center">Thành công!</h2>
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-3">
+                                                <img src="https://img.icons8.com/color/96/000000/ok--v2.png" class="fit-image">
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row justify-content-center">
+                                            <div class="col-7 text-center">
+                                                <h5>Thanh toán thành công</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        calculateTotal(0);
+        function checkLoginAndOpenModal() {
+            // Gọi một API để kiểm tra trạng thái đăng nhập (ví dụ: dùng Ajax)
+            fetch('/Account/IsLoggedIn') // Đường dẫn đến action kiểm tra đăng nhập
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isLoggedIn) {
+                        // Mở modal nếu người dùng đã đăng nhập
+                        $('#paymentModal').modal('show');
+                    } else {
+                        // Lưu URL hiện tại để gửi đi
+                        const returnUrl = encodeURIComponent(window.location.pathname); // Lưu đường dẫn hiện tại
+                        // Chuyển hướng đến trang đăng nhập với returnUrl
+                        window.location.href = '/Account/Login?returnUrl=' + returnUrl; // Thêm returnUrl vào query string
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Hàm chọn phương thức thanh toán
+        function selectPaymentMethod(element) {
+            $('.radio').removeClass('selected'); // Xóa class selected khỏi các phương thức khác
+            $(element).addClass('selected'); // Thêm class selected cho phương thức đã chọn
+            $('#SelectedPaymentMethod').val($(element).data('value')); // Cập nhật phương thức đã chọn
+        }
+
+        function updateCartInSession(productVariantId, newQuantity) {
+            $.ajax({
+                url: '/Cart/UpdateQuantity', // URL của action trong CartController
+                type: 'POST',
+                data: {
+                    variantId: productVariantId,
+                    quantity: newQuantity
+                },
+                success: function (response) {
+                    // Xử lý khi cập nhật thành công, nếu cần
+                    console.log('Updated session:', response);
+                },
+                error: function (error) {
+                    console.error('Error updating session:', error);
+                }
+            });
+        }
+
+        // Hàm cập nhật giá tiền cho từng sản phẩm
+        function updateTotalPrice(productVariantId, newQuantity) {
+            const priceText = $(`#price-${productVariantId}`).text();
+            const price = parseFloat(priceText.replace(/[^\d.-]/g, ""));
+
+            if (!isNaN(price) && !isNaN(newQuantity)) {
+                const itemTotal = price * newQuantity;
+                $(`#total-${productVariantId}`).text(itemTotal.toLocaleString('vi-VN') + " đ");
+            } else {
+                console.log("Lỗi: Giá hoặc số lượng không hợp lệ", { price, newQuantity });
+            }
+        }
+
+        //Hàm xóa sản phẩm khỏi giỏ hàng
+        function removeItem(event, productVariantId) {
+            event.preventDefault();
+            $.post('/Cart/Remove', { variantId: productVariantId }, function (data) {
+                if (data.success) {
+                    $(`#cart-item-${productVariantId}`).remove(); // Xóa sản phẩm khỏi danh sách
+                    updateGrandTotal(); // Cập nhật tổng tiền sau khi xóa sản phẩm
+                    updateCartCount(); // Cập nhật số lượng sản phẩm
+                } else {
+                    alert(data.message); // Hiển thị thông báo nếu giỏ hàng trống
+                }
+            });
+        }
+
+        // Gắn sự kiện cho nút ÁP DỤNG mã giảm giá
+        $(document).ready(function () {
+            $("#button-apply-discount").on("click", function () {
+                const appliedDiscountCode = $("#discount-code").val();
+                let totalDiscount = 0;
+
+                console.log("Mã discount đã nhập:", appliedDiscountCode);
+
+                $(".cart-item").each(function () {
+                    const productId = $(this).data("product-id");
+                    const productVariantId = $(this).data("product-variant-id");
+
+                    console.log("Đang xử lý sản phẩm - ID:", productId, "ID dung tích:", productVariantId);
+
+                    $.ajax({
+                        url: '@Url.Action("CheckDiscountCode", "Cart")',
+                        method: 'POST',
+                        data: {
+                            code: appliedDiscountCode,
+                            productId: productId
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                const discountPercentage = parseFloat(response.discountPercentage);
+                                const priceText = $(`#price-${productVariantId}`).text();
+                                const price = parseFloat(priceText.replace(/[^\d.-]/g, ""));
+                                const quantity = parseInt($(`#quantity-${productVariantId}`).val());
+                                const discountAmount = (discountPercentage / 100) * price * quantity;
+
+                                console.log("Chi tiết giảm giá: ID dung tích", productVariantId, {
+                                    "% giảm": discountPercentage,
+                                    "Giá": price,
+                                    "Số lượng": quantity,
+                                    "Số tiền giảm": discountAmount
+                                });
+
+                                $(`#total-${productVariantId}`).siblings(".discount-amount").text(discountAmount.toLocaleString('vi-VN') + " đ");
+                                totalDiscount += discountAmount;
+                            } else {
+                                $(`#total-${productVariantId}`).siblings(".discount-amount").text("0 đ");
+                            }
+
+                            $("#discount-amount").text(totalDiscount.toLocaleString('vi-VN') + " đ");
+                            calculateTotal(totalDiscount);
+
+                            $.ajax({
+                                url: '@Url.Action("SaveDiscountToSession", "Cart")',
+                                method: 'POST',
+                                data: {
+                                    discountValue: totalDiscount
+                                },
+                                success: function () {
+                                    console.log("Giảm giá đã được lưu vào session");
+                                },
+                                error: function () {
+                                    console.log("Lỗi khi lưu giảm giá vào session");
+                                }
+                            });
+
+                        },
+                        error: function () {
+                            console.log("Lỗi khi kiểm tra mã giảm giá cho sản phẩm ID:", productId);
+                            alert('Không thể kiểm tra mã giảm giá');
+                        }
+                    });
+                });
+            });
+        });
+
+
+        // Hàm tính toán tổng chi phí sau khi áp dụng giảm giá
+        function calculateTotal(totalDiscount = 0) {
+            let totalProvisional = 0;
+            const shippingFee = 30000;
+
+            $(".cart-item").each(function () {
+                const quantity = parseInt($(this).find("input[id^='quantity-']").val());
+                const priceText = $(this).find("div[id^='price-']").text();
+                const price = parseFloat(priceText.replace(/[^\d.-]/g, ""));
+
+                // Kiểm tra tính hợp lệ của giá và số lượng trước khi tính toán
+                if (!isNaN(price) && !isNaN(quantity)) {
+                    const itemTotal = price * quantity;
+                    totalProvisional += itemTotal;
+                } else {
+                    console.log("Lỗi: Không thể tính tổng vì giá hoặc số lượng không hợp lệ", { price, quantity });
+                }
+            });
+
+            console.log("Tổng tạm tính:", totalProvisional, "Phí vận chuyển:", shippingFee, "Tổng giảm giá:", totalDiscount);
+
+            $("#provisional-price").text(totalProvisional.toLocaleString('vi-VN') + " đ");
+            $("#shipping-fee").text(shippingFee.toLocaleString('vi-VN') + " đ");
+            const grandTotal = totalProvisional + shippingFee - totalDiscount;
+            $("#grand-total").text(grandTotal.toLocaleString('vi-VN') + " đ");
+
+            console.log("Tổng thanh toán cuối cùng:", grandTotal);
+        }
+
+        // Hàm cập nhật giá trị Tổng (bao gồm tính phí ship và giảm giá)
+        function updateGrandTotal(totalProvisional, shippingFee, discountAmount) {
+            const grandTotal = totalProvisional + shippingFee - discountAmount;
+            $("#grand-total").text(grandTotal.toLocaleString('vi-VN') + " đ");
+        }
+
+        // Xử lý sự kiện khi bấm nút tăng/giảm số lượng
+        $(document).ready(function () {
+            $(document).on('click', '.btn-increase, .btn-decrease', function (event) {
+                event.preventDefault();
+                const productVariantId = $(this).data('id');
+                const quantityInput = $(`#quantity-${productVariantId}`);
+                let currentQuantity = parseInt(quantityInput.val());
+                const change = $(this).hasClass('btn-increase') ? 1 : -1;
+                const newQuantity = Math.max(currentQuantity + change, 1); // Đảm bảo số lượng tối thiểu là 1
+                quantityInput.val(newQuantity);
+
+                // Cập nhật giỏ hàng trong session (nếu cần)
+                updateCartInSession(productVariantId, newQuantity);
+
+                // Cập nhật giá tiền cho sản phẩm và tổng đơn hàng
+                updateTotalPrice(productVariantId, newQuantity);
+                calculateTotal(0);  // Tính toán lại Tạm tính và Tổng, 0 là mặc định cho discount
+            });
+        });
+
+        // Hàm để cập nhật giá tiền cho từng sản phẩm dựa trên số lượng thay đổi
+        function updateTotalPrice(productVariantId, quantity) {
+            const price = parseFloat($(`#price-${productVariantId}`).text());
+            const itemTotal = quantity * price;
+            $(`#total-${productVariantId}`).text(itemTotal.toLocaleString('vi-VN') + " đ");  // Cập nhật giá tiền cho sản phẩm
+        }
+
+        // Hàm để cập nhật giỏ hàng trong session (nếu cần)
+        function updateCartInSession(productVariantId, quantity) {
+            // Implement logic to update the cart in session, if needed
+            // Example AJAX call to update session
+            $.ajax({
+                url: '/Cart/UpdateCart',
+                method: 'POST',
+                data: {
+                    productId: productVariantId,
+                    quantity: quantity
+                },
+                success: function (response) {
+                    console.log("Đã cập nhật giỏ hàng");
+                },
+                error: function () {
+                    alert("Cập nhật giỏ hàng thất bại");
+                }
+            });
+        }
+    </script>
+}

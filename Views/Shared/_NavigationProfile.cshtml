@@ -1,0 +1,91 @@
+﻿﻿@{
+    var currentPage = ViewData["CurrentPage"] as string;
+}
+@model KhielsSkincare.Models.AppUser
+
+<style>
+    /* CSS cho hiệu ứng mục được chọn */
+    .custom-nav-link.active {
+        background-color: #f0f8ff;
+        font-weight: 500;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 2px solid blue;
+    }
+
+    .custom-nav-link {
+        color: black;
+        transition: background-color 0.3s ease;
+    }
+
+        .custom-nav-link:hover {
+            background-color: #f9f9f9;
+            color: #000;
+            text-decoration: none;
+            border-radius: 12px 12px 0 0;
+        }
+</style>
+
+<div>
+    @if (Model != null)
+    {
+        <div class="position-relative" style="width: fit-content;">
+            <img loading="lazy" decoding="async" class="" src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/background-info.png">
+            <div class="position-absolute top-0 bottom-0 end-0 start-0 d-flex flex-column align-items-center justify-content-center text-center">
+                <div class="">
+                    <img loading="lazy" decoding="async" class="mx-auto" src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/avatar-profile.svg">
+                </div>
+                <div>
+                    <p class="text-white m-0">@Model.UserName</p>
+                    <p class="text-white">@Model.Email</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p class="text-white">User information is not available.</p>
+    }
+    <div class="d-flex align-items-start mt-5 mb-5">
+        <div class="nav flex-column me-3 bg-white" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width: 289px; border-radius: 12px;">
+            <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "ProfileDetail" ? "active" : "")" href="/Profile/ProfileDetail" role="tab" aria-selected="true" style="height: 58px;">
+                <span class="me-2"><i class="fa-regular fa-id-card"></i></span>
+                <p class="m-0 flex-grow-1">Thông tin cá nhân</p>
+                <span><i class="fa-solid fa-angle-right"></i></span>
+            </a>
+
+            <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "Orders" ? "active" : "")" href="/Profile/Orders" role="tab" aria-selected="false" style="height: 58px;">
+                <span class="me-2"><i class="fa-solid fa-truck-moving"></i></span>
+                <p class="m-0 flex-grow-1">Đơn hàng của tôi</p>
+                <span><i class="fa-solid fa-angle-right"></i></span>
+            </a>
+
+            <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "AddToFavorite" ? "active" : "")" href="/Favorite/Index" role="tab" aria-selected="false" style="height: 58px;">
+                <span class="me-2"><i class="fa-solid fa-bookmark"></i></span>
+                <p class="m-0 flex-grow-1">Sản phẩm yêu thích</p>
+                <span><i class="fa-solid fa-angle-right"></i></span>
+            </a>
+
+            <a class="nav-link custom-nav-link d-flex align-items-center @(currentPage == "ReviewList" ? "active" : "")" href="/Profile/ReviewList" role="tab" aria-selected="false" style="height: 58px;">
+                <span class="me-2"><i class="fa-solid fa-clock-rotate-left"></i></i></span>
+                <p class="m-0 flex-grow-1">Lịch sử đánh giá</p>
+                <span><i class="fa-solid fa-angle-right"></i></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lấy tất cả các thẻ <a> trong danh sách
+    const navLinks = document.querySelectorAll('.custom-nav-link');
+
+    // Lặp qua từng thẻ <a> và gán sự kiện nhấn
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            // Xóa lớp 'active' khỏi tất cả các thẻ
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Thêm lớp 'active' vào thẻ được nhấn
+            this.classList.add('active');
+        });
+    });
+</script>

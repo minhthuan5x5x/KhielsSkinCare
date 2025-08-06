@@ -1,0 +1,233 @@
+﻿﻿@{
+}
+<style>
+    .vertical-slider {
+        width: 70px;
+        max-height: 340px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .slider-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .slider-images {
+        transition: transform 0.5s ease-in-out;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .slider-images img {
+            width: 100%;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+    .selected-variation {
+        border: 1px solid #00a3ff !important;
+        background: #f7fcff;
+    }
+
+    .selected-item-slider {
+        border: 1px solid #000000 !important;
+    }
+</style>
+
+<div class="main-content container pb-5">
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-black">Trang Chủ</a></li>
+            <li class="breadcrumb-item activetext-black" aria-current="page">Sản phẩm bán chạy</li>
+        </ol>
+    </nav>
+
+    <div class="c-product__inner row row-cols-2">
+        <div class="col d-flex justify-content-around">
+            <div class="vertical-slider">
+                <div onclick="moveUp()">
+                    <i class="fa-solid fa-chevron-up text-black" style="cursor: pointer;"></i>
+                </div>
+
+                <div class="slider-wrapper">
+                    <div id="sliderImages" class="slider-images">
+                        <img class="border" src="~/img/sanpham2.png" alt="Image 1" onclick="imageClicked(this)">
+                        <img class="border" src="~/img/sanpham.png" alt="Image 2" onclick="imageClicked(this)">
+                        <img class="border" src="~/img/sanpham.png" alt="Image 3" onclick="imageClicked(this)">
+                        <img class="border" src="~/img/sanpham.png" alt="Image 4" onclick="imageClicked(this)">
+                        <img class="border" src="~/img/sanpham.png" alt="Image 5" onclick="imageClicked(this)">
+                    </div>
+                </div>
+
+                <div onclick="moveDown()">
+                    <i class="fa-solid fa-chevron-down text-black" style="cursor: pointer"></i>
+                </div>
+            </div>
+            <div id="mainImageContainer">
+                <img id="mainImage" style="width: 465px; height: 465px;" src="~/img/sanpham2.png" />
+            </div>
+
+        </div>
+        <div class="product-info col">
+            <div class="product-details">
+                <h3 class="product-title font-serif fw-bold">Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution</h3>
+                <span id="main-product-price" class="font-18 fw-500">₫ 1,850,000</span>
+                <h6 class="product-description pt-3 pb-3 fw-normal"> Công thức đặc biệt chứa EAA giúp giảm các vết thâm mụn &amp; đều màu sáng rạng rỡ. Kết hợp cùng Salicylic Acid giúp da được thông thoáng, đều màu hơn. </h6>
+            </div>
+            <div class="product-variations">
+                <div class="row">
+                    <div class="col-6 col-lg-4 mb-4 text-center font-12">
+                        <a class="variation-item selected-variation d-block border text-decoration-none" href="#" data-price="₫ 1,850,000">
+                            <span class="variation-size text-black fw-500">30 ml</span>
+                            <div class="variation-price text-center">
+                                <span class="d-block text-dark opacity-75">₫ 1,850,000</span>
+                                <span class="text-muted small">(₫61666.67/ml.)</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-lg-4 mb-4 text-center font-12">
+                        <a class="variation-item d-block border text-decoration-none" href="#" data-price="₫ 2,650,000">
+                            <span class="variation-size text-black fw-500">50 ml</span>
+                            <div class="variation-price text-center">
+                                <span class="d-block text-dark opacity-75">₫ 2,650,000</span>
+                                <span class="text-muted small">(₫53000/ml.)</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-lg-4 mb-4 text-center font-12">
+                        <a class="variation-item d-block border text-decoration-none" href="#" data-price="₫ 4,250,000">
+                            <span class="variation-size text-black fw-500">115 ml</span>
+                            <div class="variation-price text-center">
+                                <span class="d-block text-dark opacity-75">₫ 4,250,000</span>
+                                <span class="text-muted small">(₫36956.52/ml.)</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-evenly">
+                    <div class="input-group pb-3" style="width: 120px;">
+                        <button class="btn btn-outline-secondary rounded-0 border-dark border border-end-0" type="button" aria-label="Giảm số lượng" disabled>−</button>
+                        <input type="number" class="form-control text-center border-top border-bottom border-0 border-dark bg-white" id="quantity-031565" name="quantity" value="1" min="1" max="5" readonly aria-label="Số lượng">
+                        <button class="btn btn-outline-secondary rounded-0 border-dark border border-start-0" type="button" aria-label="Tăng số lượng">+</button>
+                    </div>
+                    <div class="ms-3" style="width: 375px;">
+                        <button type="button" class="rounded-0 btn btn-outline-dark add-to-cart w-100" data-name="Serum Sáng Da" data-price="2650000" data-size="50ml">THÊM VÀO GIỎ HÀNG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="review-content container">
+    <h2 class="fw-500 font-serif text-center pt-5 pb-5 border-top border-bottom text-uppercase m-0">Review Serum Sáng Da Mờ Thâm Vitamin C Kiehl's Clearly Corrective Dark Spot Solution</h2>
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    <h4 class="fw-normal font-serif p-3 m-0">Giới Thiệu Chung</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="container">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                    <h4 class="fw-normal font-serif p-3 m-0">Công Dụng Sản Phẩm</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                    <h4 class="fw-normal font-serif p-3 m-0">Thành Phần Chính</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item border-bottom border-top border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                    <h4 class="fw-normal font-serif p-3 m-0">Hướng dẫn sử dụng</h4>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+    </div>
+    <img class="w-100 pt-5 pb-5" src="~/img/product-banner.png" />
+</div>
+<script>
+    //Start-ProducSlider
+    let currentPosition = 0;
+    const imageHeight = 70;
+    const totalImages = document.querySelectorAll('.slider-images img').length;
+    const visibleImages = 4;
+
+    function moveUp() {
+        if (currentPosition > 0) {
+            currentPosition--;
+            document.getElementById('sliderImages').style.transform = `translateY(${-imageHeight * currentPosition}px)`;
+        }
+    }
+
+    function moveDown() {
+        if (currentPosition < totalImages - visibleImages) {
+            currentPosition++;
+            document.getElementById('sliderImages').style.transform = `translateY(${-imageHeight * currentPosition}px)`;
+        }
+    }
+
+    function imageClicked(imgElement) {
+        const mainImage = document.getElementById("mainImage");
+        mainImage.src = imgElement.src;
+
+        const sliderImages = document.querySelectorAll("#sliderImages img");
+        sliderImages.forEach(img => img.classList.remove("selected-item-slider"));
+
+        imgElement.classList.add("selected-item-slider");
+    }
+    window.onload = function () {
+        const firstImage = document.querySelector("#sliderImages img");
+        imageClicked(firstImage);
+    }
+    //End-ProductSlider
+
+    //Start-ProductDetails
+    const variationItems = document.querySelectorAll('.variation-item');
+    const mainProductPrice = document.getElementById('main-product-price');
+
+    variationItems.forEach(item => {
+        item.addEventListener('click', function (event) {
+            event.preventDefault();
+            const selectedPrice = this.getAttribute('data-price');
+            mainProductPrice.textContent = selectedPrice;
+
+            variationItems.forEach(i => i.classList.remove('selected-variation'));
+
+            this.classList.add('selected-variation');
+        });
+    });
+</script>

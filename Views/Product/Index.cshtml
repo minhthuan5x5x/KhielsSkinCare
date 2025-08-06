@@ -1,0 +1,123 @@
+﻿<div class="c-modal__wrapper">
+    <header class="c-modal__header">
+        <h2 class="c-modal__title" id="modal-title">Viết nhận xét</h2>
+    </header>
+    <div class="c-modal__body">
+        <form action="/on/demandware.store/Sites-kiehls-vn-ng-Site/vi_VN/ProductReviews-Submit" method="POST" name="writereview" class="c-form c-review-form__rating">
+            <!-- Đánh giá của bạn -->
+            <fieldset role="group">
+                <legend class="c-form__row-title c-review-form__rating-title">Đánh giá của bạn</legend>
+                <div class="c-rating-input__field">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                    <input type="hidden" name="rating" id="rating" value="0">
+                </div>
+            </fieldset>
+            <div class="c-separator m-gutter-large"></div>
+
+            
+            <!-- Nhận xét của bạn -->
+            <fieldset role="group">
+                <legend class="c-form__row-title c-review-form__rating-title">Nhận xét của bạn</legend>
+                <textarea class="c-review-form__textarea" name="reviewtext" required placeholder="Hãy viết nhận xét của bạn tại đây..."></textarea>
+            </fieldset>
+            <div class="c-separator m-gutter-large"></div>
+
+            <!-- Xác thực -->
+            <fieldset role="group">
+                <legend class="c-form__row-title c-review-form__rating-title">Xác thực</legend>
+                <div class="c-form__row m-inlined-auto">
+                    <input type="radio" name="nametype" value="fullname" id="nametype_fullname" required>
+                    <label for="nametype_fullname">Dùng tên/họ của tôi</label>
+
+                    <input type="radio" name="nametype" value="nickname" id="nametype_nickname">
+                    <label for="nametype_nickname">Dùng biệt danh của tôi</label>
+
+                    <input type="radio" name="nametype" value="none" id="nametype_none">
+                    <label for="nametype_none">Ẩn danh</label>
+                </div>
+                <div class="c-field c-text-field nickname-input" id="nicknameField" style="display: none;">
+                    <input type="text" name="nickname" placeholder="Nickname">
+                </div>
+            </fieldset>
+            <!-- Submit Button -->
+            <div class="c-field h-text-justify-content-center">
+                <button type="submit" class="c-button">Đăng đánh giá</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .c-rating-input__field {
+        display: flex;
+        gap: 5px;
+    }
+
+    .star {
+        font-size: 30px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+        .star.selected,
+        .star.hovered {
+            color: #f1c40f;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const nicknameRadio = document.getElementById('nametype_nickname');
+        const nicknameField = document.getElementById('nicknameField');
+
+        document.querySelectorAll('input[name="nametype"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (nicknameRadio.checked) {
+                    nicknameField.style.display = 'block';
+                } else {
+                    nicknameField.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+
+        stars.forEach((star, index) => {
+            // Sự kiện khi rê chuột qua sao
+            star.addEventListener('mouseover', function () {
+                // Đổi màu tất cả các sao từ đầu đến ngôi sao đang rê chuột qua
+                for (let i = 0; i <= index; i++) {
+                    stars[i].classList.add('hovered');
+                }
+            });
+
+            // Sự kiện khi rời chuột khỏi sao
+            star.addEventListener('mouseout', function () {
+                // Xóa màu tạm khi rời chuột
+                stars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            // Sự kiện khi click để chọn đánh giá
+            star.addEventListener('click', function () {
+                // Xóa tất cả các sao đã chọn trước đó
+                stars.forEach(s => s.classList.remove('selected'));
+
+                // Đánh dấu tất cả các sao từ đầu đến ngôi sao được chọn
+                for (let i = 0; i <= index; i++) {
+                    stars[i].classList.add('selected');
+                }
+
+                // Cập nhật giá trị cho input ẩn
+                ratingInput.value = index + 1;
+            });
+        });
+    });
+</script>

@@ -1,0 +1,83 @@
+﻿@using KhielsSkincare.Extensions
+@model IEnumerable<Product>
+@{
+
+}
+
+<style>
+    .product-slide .card-title {
+        height: 72px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-slide .card-text {
+        height: 42px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<div class="main__top mb-4">
+    <img src="~/images/bestseller-banner.png" />
+</div>
+<div class="main__content container">
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-black">Trang Chủ</a></li>
+            <li class="breadcrumb-item activetext-black" aria-current="page">Dành cho nam</li>
+        </ol>
+    </nav>
+
+    <div class="main__content-list d-flex mt-4 mb-5">
+        <div class="main__content-product">
+            <div class="product-slide row row-cols-1 row-cols-md-2 row-cols-lg-4">
+                @foreach (var product in Model)
+                {
+                    <div class="product col mb-4">
+                        <div class="card border-0">
+                            <a asp-action="Details" asp-controller="Product" asp-route-Id="@product.ProductId">
+                                <img src="~/images/product/@product.ImageUrl" alt="@product.ProductName" class="card-img-top" style="height: 306px; "/>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-bold font-serif">@product.ProductName</h5>
+                                    <p class="card-text fst-italic font-14 font-serif">@product.Description</p>
+                                </div>
+                            </a>
+
+                            <div class="form-group d-flex justify-content-center align-items-center">
+                                <label for="dropdownMenu-@product.ProductId" class="font-12 me-2">Chọn dung tích:</label>
+                                <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@product.ProductId" data-product-id="@product.ProductId">
+                                    @foreach (var variant in product.ProductVariants)
+                                    {
+                                        <option value="@variant.ProductVariantId" data-price="@variant.Price.ToVnd()">
+                                            @variant.Size
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="font-18 text-center fw-500 pt-2 pb-2">
+                                <span class="priceDisplay" id="priceDisplay-@product.ProductId">
+                                    @product.ProductVariants.FirstOrDefault()?.Price.ToVnd()
+                                </span>
+                            </div>
+                            <button class="btn btn-outline-dark add-to-cart"
+                                    type="button"
+                                    data-product-id="@product.ProductId"
+                                    data-variant-id="@product.ProductVariants.FirstOrDefault()?.ProductVariantId"
+                                    onclick="addToCart(this)">
+                                THÊM VÀO GIỎ HÀNG
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

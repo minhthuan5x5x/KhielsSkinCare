@@ -1,0 +1,180 @@
+
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+}
+
+.font-serif {
+    font-family: serif !important;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+ul {
+    list-style: none;
+    padding-inline-start: 0;
+    margin-bottom: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.font-12 {
+    font-size: 12px;
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+.font-16 {
+    font-size: 16px;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+header {
+    background-color: black;
+    height: 154px;
+}
+
+.header__main-left a:first-child::after {
+    background: #373737;
+    content: "";
+    height: 1.25rem;
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: .0625rem;
+}
+
+.header__main .input-field {
+    height: 58px;
+    width: 600px;
+    position: relative;
+}
+
+.input-field .btn-search {
+    background-color: #c1d0f6;
+    height: 42px;
+    width: 42px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 6px;
+    border-radius: 999px;
+    border: 0;
+    padding: 0;
+}
+
+.input-field .search {
+    height: 100%;
+    border: 0;
+    width: 100%;
+    padding: 6px 32px 6px 70px;
+    font-size: 18px;
+    color: #666;
+    border-radius: 34px;
+    outline: none;
+}
+
+/*Gi? hàng*/
+
+.header__main .cart-button {
+    padding: 10px 20px;
+    margin-left: 20px;
+    background-color: #1250DC;
+    border-radius: 42px;
+    font-weight: 500;
+}
+
+.header__main .cart-sidebar {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    background: white;
+    z-index: 999;
+    transition: all 0.3s ease-in-out;
+}
+
+    .header__main .cart-sidebar.active {
+        right: 0;
+    }
+
+.cart-sidebar .cart-container {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    max-height: calc(100% - 254px);
+}
+
+.header__main .cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 998;
+}
+
+    .header__main .cart-overlay.active {
+        display: block;
+    }
+
+
+.header__main .login-button {
+    font-weight: 500;
+}
+
+.header__navigation ul li a {
+    color: white;
+}
+
+.footer__top img {
+    height: auto;
+    max-width: 100%;
+}
+
+.footer__middle {
+    background-color: black;
+    padding: 25px 0;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+}
+
+    .footer__middle img {
+        width: 55px;
+        height: 55px;
+        margin-right: 20px;
+    }
+
+.footer__main ul a {
+    background-color: black;
+    color: white;
+}
+
+.footer__main .icon-social ul li {
+    padding: 10px;
+    color: white;
+    font-size: 25px;
+}

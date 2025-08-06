@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["CurrentPage"] = "ProfileDetail";
+}
+@model KhielsSkincare.Models.AppUser
+
+<div style="background-color: #ededed;">
+    <div class="container pt-3">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @Html.ValidationSummary()
+            </div>
+        }
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-black">Trang Chủ</a></li>
+                <li class="breadcrumb-item activetext-black" aria-current="page">Cá nhân</li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="col-auto">
+                @{
+                    Html.RenderPartial("_NavigationProfile", Model);
+                }
+            </div>
+            <div class="col">
+                <div class="bg-white mb-5" style="border-radius: 12px;">
+                    <div class="pt-3 px-4 border-bottom">
+                        <p class="fw-500">Thông tin cá nhân</p>
+                    </div>
+                    <div class="pt-3 me-auto ms-auto" style="max-width: 440px;">
+                        <div class="text-center">
+                            <img src="https://nhathuoclongchau.com.vn/estore-images/profile/v2/avatar-profile-large.svg">
+                        </div>
+                        <div class="text-center pt-4 pb-4">
+                            <div class="px-4">
+                                <div class="d-flex justify-content-between pt-4 pb-4 border-bottom">
+                                    <span class="">Tên người dùng</span>
+                                    <span class="">@Model.UserName</span>
+                                </div>
+                                <div class="d-flex justify-content-between pt-4 pb-4 border-bottom">
+                                    <span class="">Email</span>
+                                    <span class="">@Model.Email</span>
+                                </div>
+                                <div class="d-flex justify-content-between pt-4 pb-4 border-bottom">
+                                    <span class="">Số điện thoại</span>
+                                    <span class="">@Model.PhoneNumber</span>
+                                </div>
+                                <div class="d-flex justify-content-between pt-4 pb-4 border-bottom">
+                                    <span class="">Địa chỉ</span>
+                                    <span class="">@Model.Address</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn mb-5 mt-5" data-bs-toggle="modal" data-bs-target="#editProfileModal" style="background-color: #eaeffa; border-radius: 24px; height: 48px;">
+                                <span style="color: #1250dc;" class="fw-500">Chỉnh sửa thông tin</span>
+                            </button>
+                            @Html.Partial("_EditProfileForm", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

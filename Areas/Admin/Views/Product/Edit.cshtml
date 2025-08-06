@@ -1,0 +1,134 @@
+﻿@model KhielsSkincare.Models.ViewModels.ProductViewModel
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Create Product</h1>
+    <p class="mb-4">
+        DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank"
+                                                                   href="https://datatables.net">official DataTables documentation</a>.
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table table-bordered" width="100%" cellspacing="0">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Product.ProductId" />
+
+                        <div class="form-group">
+                            <label asp-for="Product.ProductName" class="control-label"></label>
+                            <input asp-for="Product.ProductName" class="form-control" />
+                            <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Product.Brand" class="control-label"></label>
+                            <input asp-for="Product.Brand" class="form-control" />
+                            <span asp-validation-for="Product.Brand" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Product.Description" class="control-label"></label>
+                            <textarea asp-for="Product.Description" class="form-control"></textarea>
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Product.CategoryId" class="control-label"></label>
+                            <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <h4>Product Variants</h4>
+                        <button type="button" class="btn btn-primary" onclick="addVariant()">Add Variant</button>
+
+                        <div id="product-variants">
+                            @for (int i = 0; i < Model.ProductVariants.Count; i++)
+                            {
+                                var variant = Model.ProductVariants.ElementAt(i);
+                                <div class="variant-item" data-index="@i">
+                                    <input type="hidden" asp-for="ProductVariants[@i].ProductVariantId" />
+
+                                    <div class="form-group">
+                                        <label>Size</label>
+                                        <input type="text" asp-for="ProductVariants[@i].Size" class="form-control" placeholder="Size" value="@variant.Size" />
+                                        <span asp-validation-for="ProductVariants[@i].Size" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="number" asp-for="ProductVariants[@i].Price" class="form-control" placeholder="Price" value="@variant.Price" />
+                                        <span asp-validation-for="ProductVariants[@i].Price" class="text-danger"></span>
+                                    </div>
+                                    <button type="button" class="btn btn-danger" onclick="removeVariant(this)">Remove</button>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Phần tải lên hình ảnh -->
+                        <div class="form-group mt-4">
+                            <label>Upload Images</label>
+                            @for (int j = 0; j < 5; j++)
+                            {
+                                <input type="file" name="ImageUpload" class="form-control" />
+                            }
+                        </div>
+
+                        <button type="button" class="btn btn-close" asp-action="ProductList" asp-controller="Product">Back</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Hàm thêm biến thể
+        function addVariant() {
+            var index = $('#product-variants .variant-item').length;
+            var newVariant = `<div class="variant-item" data-index="${index}">
+                                        <div class="form-group">
+                                            <label>Size</label>
+                                            <input type="text" name="ProductVariants[${index}].Size" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Price</label>
+                                            <input type="number" name="ProductVariants[${index}].Price" class="form-control" />
+                                        </div>
+                                        <button type="button" class="btn btn-danger" onclick="removeVariant(this)">Remove</button>
+                                    </div>`;
+            $('#product-variants').append(newVariant);
+        }
+
+
+        function updateVariantIndices() {
+            $('#product-variants .variant-item').each(function (index) {
+                $(this).attr('data-index', index);
+                $(this).find('input[name^="ProductVariants"]').each(function () {
+                    var name = $(this).attr('name');
+                    var newName = name.replace(/ProductVariants\[\d+\]/, `ProductVariants[${index}]`);
+                    $(this).attr('name', newName);
+                });
+            });
+        }
+
+        // Cập nhật chỉ số sau khi xóa
+        function removeVariant(button) {
+            $(button).closest('.variant-item').remove();
+            updateVariantIndices();
+        }
+
+    </script>
+}

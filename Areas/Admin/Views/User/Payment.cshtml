@@ -1,0 +1,36 @@
+﻿@model IEnumerable<KhielsSkincare.Models.Payment>  
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Danh sách Thanh Toán";
+}
+
+<div class="container-fluid">
+    <h5 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Hình thức thanh toán</th>
+                <th>Số tiền</th>
+                <th>Ngày thanh toán</th>
+                <th>ID giao dịch</th>
+                <th>Trạng thái</th>
+                <th>Order ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var payment in Model)
+            {
+                <tr>
+                    <td>@payment.Id</td>
+                    <td>@payment.PaymentMethod</td>
+                    <td>@payment.Amount</td>
+                    <td>@payment.PaymentDate.ToString("dd/MM/yyyy")</td>
+                    <td>@payment.TransactionId</td>
+                    <td>@payment.Status</td>
+                    <td>@payment.OrderId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

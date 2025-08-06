@@ -1,0 +1,73 @@
+﻿@model ProductQuantity
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Create QUantity";
+    var total_quantities = 0;
+    var key = 1;
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Create Product</h1>
+    <p class="mb-4">
+        DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank"
+                                                                   href="https://datatables.net">official DataTables documentation</a>.
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="table table-bordered" width="100%" cellspacing="0">
+                    <form asp-action="StoreProductQuantity" asp-controller="Product" enctype="multipart/form-data">
+                        <input type="hidden" name="ProductVariantId" value="@ViewBag.Id" />
+                        <div class="form-group">
+                            <label asp-for="Quantity" class="control-label"></label>
+                            <input min="1" value="1" asp-for="Quantity" class="form-control" />
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Create</button>
+                    </form>                                      
+                </div>
+
+                <div class="table">
+                    <form>
+                        <h3>History Add Quantity</h3>
+                        <table class="table table-striped" id="example" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Quantity Add</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var productQuantity in ViewBag.ProductByQuantity)
+                                {
+                                    total_quantities += productQuantity.Quantity;
+                                    <tr>
+                                        <td>@key</td>
+                                        <td>@productQuantity.Quantity</td>
+                                        <td>@productQuantity.DateCreate</td>                                        
+                                    </tr>
+                                    key++;
+                                }
+
+                                Total Quantities: @total_quantities
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <a asp-action="Stock" asp-controller="Product" class="btn btn-dark">Back To List</a>
+            </div>
+        </div>
+    </div>
+</div>

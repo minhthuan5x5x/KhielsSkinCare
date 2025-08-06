@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewData["Title"] = "ProductsSlide";
+}
+@model IEnumerable<Product>
+
+<div class="main__slider">  
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" alt="" src="~/img/home-banner.png" />
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" alt="" src="~/img/home-banner2.png" />
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" alt="" src="~/img/home-banner3.png" />
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="container pt-5 pb-5">
+        <h2 class="text-uppercase fw-500 text-center font-serif pt-5 p-4">Top sản phẩm bán chạy</h2>
+        <div class="row row-cols-4">
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                <div class="card border-0">
+                    <img src="~/images/@product.ImageUrl" alt="@product.ProductName" class="card-img-top"/>
+                    <div class="card-body text-center">
+                        <h5 class="card-title font-18">@product.ProductName</h5>
+                        <p class="card-text fst-italic font-12">@product.Description</p>
+                    </div>
+
+                        <div class="form-group d-flex justify-content-center align-items-center">
+                            <label for="dropdownMenu" class="font-12 me-2">Chọn dung tích:</label>
+                            <select class="form-control w-50" id="dropdownMenu">
+                                @foreach (var variant in product.ProductVariants)
+                                {
+                                    <option value="@variant.Size" data-price="@variant.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))">
+                                        @variant.Size
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Hiển thị giá theo dung tích được chọn -->
+                        <div class="price-display mt-3">
+                            Giá: <span id="priceDisplay"></span>
+                        </div>
+                    <button type="button" class="btn btn-outline-dark">THÊM VÀO GIỎ HÀNG</button>
+                </div>
+            </div>   
+        }
+        </div>       
+    </div>
+</div>
+
+<script>
+    // Xử lý sự kiện thay đổi giá dựa trên dung tích được chọn
+    document.getElementById('dropdownMenu').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        document.getElementById('priceDisplay').textContent = price;
+    });
+
+    // Hiển thị giá của dung tích đầu tiên khi trang được tải
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const firstOption = dropdownMenu.options[dropdownMenu.selectedIndex];
+        const initialPrice = firstOption.getAttribute('data-price');
+        document.getElementById('priceDisplay').textContent = initialPrice;
+    });
+</script>

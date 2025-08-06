@@ -1,0 +1,303 @@
+﻿﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Khiel's</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DoAnPhanMem.styles.css" asp-append-version="true" />
+    <script src="https://kit.fontawesome.com/eaf1554704.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+*@    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+@*    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+*@    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+@*    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"></script>
+*@    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider-extensions.min.js" rel="stylesheet" />
+
+
+    <link href="~/css/checkout.css" rel="stylesheet" />
+    <script src="~/js/checkout.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header__top container pb-2">
+            <div class="d-flex justify-content-between align-items-center font-14" style="height: 36px;">
+                <div class="col-auto text-white">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    Chào mừng bạn đến với cửa hàng mỹ phẩm ABC
+                </div>
+                <div class="col-auto text-white">
+                    <ul class="d-flex align-items-center">
+                        <li>
+                            <i class="fa-solid fa-inbox"></i>
+                            Email: cskh@myphamABC.vn
+                        </li>
+                        <li class="ms-3">
+                            <i class="fa-solid fa-phone"></i>
+                            Hotline: 028.8484.7777
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="header__main container pb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="col-auto">
+                    <a href="@Url.Action("Index", "Home")"><img style="width: 234px;" src="~/images/logo.png" /></a>
+                </div>
+                <div class="col-auto">
+                    <div class="input-field">
+                        <button class="btn-search">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #1250dc;"></i>
+                        </button>
+                        <input class="search" type="text" placeholder="Tôi đang tìm kiếm..." value="">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <ul class="d-flex align-items-center">
+                        @if(User.Identity?.IsAuthenticated ?? false){
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                                <i class="fa-solid fa-user me-1" style="color: #ffffff;"></i>
+                                @User.Identity.Name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="/Profile/ProfileDetail">Thông tin cá nhân</a></li> <!-- Liên kết đến trang thông tin cá nhân -->
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-action="Logout" asp-controller="Account">Đăng xuất</a></li> <!-- Đăng xuất -->
+                            </ul>        
+                        </li>
+                        }
+                        else{
+                            <li class="login-button">
+                                <a asp-controller="Account" asp-action="Login" style="color: white;">
+                                    <i class="fa-solid fa-user me-1" style="color: #ffffff;"></i>
+                                    Đăng nhập
+                                </a>
+                            </li>
+                        }
+                        
+                        
+                        <li class="cart-button" style="color: white;">
+                            <a href="@Url.Action("Index", "Cart")" style="color: white;">                               
+                                <i class="fa-solid fa-cart-shopping me-1" style="color: #ffffff;"></i>                               
+                                    @await Component.InvokeAsync("CartSum")                               
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="header__navigation container mt-2">
+            <ul class="d-flex justify-content-center">
+                <li class="pe-3">
+                    <a href="#">Khuyến mãi t9</a>
+                </li>
+                <li class="pe-3">
+                    <a href="#">Cơ hội cuối</a>
+                </li>
+                <li class="pe-3">
+                    <a href="@Url.Action("BestSeller", "Home")">Kielh's best seller</a>
+                </li>
+                <li class="pe-3">
+                    <a href="#">Dưỡng da & Dưỡng thể</a>
+                </li>
+                <li class="pe-3">
+                    <a href="#">Chăm sóc tóc</a>
+                </li>
+                <li class="pe-3">
+                    <a asp-action="ForMen" asp-controller="Product">Dành cho nam</a>
+                </li>
+                <li class="pe-3">
+                    <a href="#">Về Kielh's</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        @Html.Partial("_NotificationCartPartial")
+        @RenderBody()
+    </main>
+
+    <footer>
+        <div class="footer__top">
+            <img src="~/images/footer_banner.jpg" />
+        </div>
+        <div class="footer__middle">
+            <div class="container">
+                <ul class="d-flex justify-content-between text-white">
+                    <li>
+                        <img src="~/images/footer_28-day.png" />
+                        Cam kết 28 ngày
+                    </li>
+                    <li>
+                        <img src="~/images/footer_free-delivery.png" />
+                        Giao hàng miễn phí
+                    </li>
+                    <li>
+                        <img src="~/images/footer_exclusive-offers.png" />
+                        Ưu đãi độc quyền
+                    </li>
+                    <li>
+                        <img src="~/images/footer_gifting.png" />
+                        Quà tặng
+                    </li>
+                    <li>
+                        <img src="~/images/footer_sample.png" />
+                        Mẫu thử
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__main pb-4 bg-black">
+            <div class="container d-flex justify-content-between pt-4">
+                <div class="col-8 row">
+                    <ul class="col-3">
+                        <li><a href="" class="fw-500 text-uppercase">Liên hệ</a></li>
+                        <li>
+                            <ul class="mt-1">
+                                <li><a href="">Email chúng tôi</a></li>
+                                <li><a href="">1800 5454 63</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="col-3">
+                        <li><a href="" class="fw-500 text-uppercase">Chăm sóc khách hàng</a></li>
+                        <li>
+                            <ul class="mt-1">
+                                <li><a class="font-14" href="">Hệ thống cửa hàng</a></li>
+                                <li><a class="font-14" href="">Theo dõi đơn hàng</a></li>
+                                <li><a class="font-14" href="">Câu hỏi thường gặp</a></li>
+                                <li><a class="font-14" href="">Chính sách giao hàng & hoàn trả</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="col-3">
+                        <li><a href="" class="fw-500 text-uppercase">Về Kielh's</a></li>
+                        <li>
+                            <ul class="mt-1">
+                                <li><a class="font-14" href="">Phát triển bền vững</a></li>
+                                <li><a class="font-14" href="">Lời khuyên cho da</a></li>
+                                <li><a class="font-14" href="">Chương trình thiện nguyện</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="col-3">
+                        <li><a href="" class="fw-500 text-uppercase">Tìm hiểu thành phần</a></li>
+                        <li>
+                            <ul class="mt-1">
+                                <li><a class="font-14" href="">Retinol</a></li>
+                                <li><a class="font-14" href="">Niacinamide</a></li>
+                                <li><a class="font-14" href="">Hyaluromic Acid</a></li>
+                                <li><a class="font-14" href="">Glycomic Acid</a></li>
+                                <li><a class="font-14" href="">Salicylic Acid</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="col-3 mt-4">
+                        <li><a href="" class="fw-500 text-uppercase">Bí quyết chọn sản phẩm</a></li>
+                        <li>
+                            <ul class="mt-1">
+                                <li><a class="font-14" href="">Sữa rửa mặt cho da dầu</a></li>
+                                <li><a class="font-14" href="">Toner cho da mụn</a></li>
+                                <li><a class="font-14" href="">Mặt nạ đất sét cho da dầu mụn</a></li>
+                                <li><a class="font-14" href="">Kem dưỡng ẩm cho da</a></li>
+                                <li><a class="font-14" href="">Serum Vitamin C</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="col-3 mt-4">
+                        <li><a href="" class="fw-500 text-uppercase">Cách chăm sóc da</a></li>
+                        <li>
+                            <ul class="mt-1">
+                                <li><a class="font-14" href="">Cách chăm sóc cho da khô</a></li>
+                                <li><a class="font-14" href="">Skincare cho da dầu mụn</a></li>
+                                <li><a class="font-14" href="">Cách dùng Retinol</a></li>
+                                <li><a class="font-14" href="">Da nhạy cảm là gì?</a></li>
+                                <li><a class="font-14" href="">Da thường là gì?</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-4">
+                    <div>
+                        <div class="text-white text-uppercase fw-500 mb-1">Đăng ký email</div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                    </div>
+                    <div class="form-check text-white font-14">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Tôi đồng ý với <a href="">chính sách bảo mật*</a>
+                        </label>
+                    </div>
+                    <div class="text-white mt-3 font-14">
+                        Trang này được bảo vệ bởi reCAPTCHA, Google
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Chính sách bảo mật</a> và
+                        <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Điều khoản dịch vụ</a>.
+                    </div>
+                    <button type="button" class="btn btn-outline-light mt-3 mb-3 w-50">GỞI</button>
+                    <div class="icon-social">
+                        <ul class="d-flex">
+                            <li>
+                                <a><i class="fa-brands fa-youtube"></i></a>
+                            </li>
+                            <li>
+                                <a><i class="fa-brands fa-facebook-messenger"></i></a>
+                            </li>
+                            <li>
+                                <a><i class="fa-brands fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a><i class="fa-brands fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a><i class="fa-brands fa-x-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a><i class="fa-brands fa-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img style="width: 370px;" src="~/images/pasted-image-0.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/product.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/cart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swee    talert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">    
+    <script src="https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js"></script>
+    <script>
+        $(function(){
+            var message = '@TempData["success"]';
+            if(message != '')
+                Swal.fire(message);
+        })
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

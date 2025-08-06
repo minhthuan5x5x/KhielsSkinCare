@@ -1,0 +1,19 @@
+﻿@model KhielsSkincare.Models.AppUser
+
+<h2>Chi tiết người dùng</h2>
+<div>
+    <h4>@Model.UserName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+
+        <!-- Thêm các thuộc tính khác nếu cần -->
+    </dl>
+    <div>
+        <a asp-action="Index" class="btn btn-primary">Quay lại</a>
+    </div>
+</div>

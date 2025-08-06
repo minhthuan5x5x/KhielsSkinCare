@@ -1,0 +1,74 @@
+﻿@model KhielsSkincare.Models.AppUser
+
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Chỉnh Sửa Thông Tin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="UpdateProfile" asp-controller="Profile" method="post" id="editProfileForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Tên người dùng</label>
+                        <input type="text" class="form-control" name="UserName" value="@Model.UserName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="Email" value="@Model.Email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" name="PhoneNumber" value="@Model.PhoneNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" name="Address" value="@Model.Address">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu hiện tại</label>
+                        <input type="password" class="form-control" name="CurrentPassword" id="CurrentPassword" oninput="checkPasswordFields()">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu mới</label>
+                        <input type="password" class="form-control" name="NewPassword" id="NewPassword" oninput="checkPasswordFields()">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Xác nhận mật khẩu mới</label>
+                        <input type="password" class="form-control" name="ConfirmPassword" id="ConfirmPassword" oninput="checkPasswordFields()">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary" id="saveChangesBtn">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkPasswordFields() {
+        const currentPassword = document.getElementById("CurrentPassword").value;
+        const newPassword = document.getElementById("NewPassword").value;
+        const confirmPassword = document.getElementById("ConfirmPassword").value;
+        const saveButton = document.getElementById("saveChangesBtn");
+
+        // Kích hoạt nút lưu nếu không có mật khẩu nào được nhập
+        if (!currentPassword && !newPassword && !confirmPassword) {
+            saveButton.disabled = false; // Kích hoạt nút "Lưu thay đổi"
+        } else {
+            // Nếu mật khẩu hiện tại được nhập, kiểm tra mật khẩu mới và xác nhận mật khẩu mới
+            if (currentPassword) {
+                if (newPassword && confirmPassword) {
+                    // Kích hoạt nút lưu nếu mật khẩu mới và xác nhận khớp nhau
+                    saveButton.disabled = newPassword !== confirmPassword;
+                } else {
+                    saveButton.disabled = true; // Nếu không có mật khẩu mới hoặc xác nhận mật khẩu mới thì tắt nút
+                }
+            } else {
+                saveButton.disabled = false; // Nếu không có mật khẩu hiện tại, cho phép lưu
+            }
+        }
+    }
+</script>

@@ -1,0 +1,54 @@
+﻿@using KhielsSkincare.Extensions
+@model List<KhielsSkincare.Models.ProductVariant>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Product Variants";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Product Variants</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Product Variants</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="example" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Product Id</th>
+                            <th>Product Varriant Id</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Sold</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var variant in Model)
+                        {
+                            <tr>
+                                <td>@variant.ProductId</td>
+                                <td>@variant.ProductVariantId</td>
+                                <td>@variant.Size</td>
+                                <td>@variant.Price.ToVnd()</td>
+                                <td><b>@variant.Sold</b></td>
+                                <td>
+                                    <b>@variant.Quantity</b>
+                                    <a asp-action="AddQuantity" asp-controller="Product" asp-route-id="@variant.ProductVariantId" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "User";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">
+        DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank"
+                                                                   href="https://datatables.net">official DataTables documentation</a>.
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="myTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usersRole in Model)
+                        {
+                            <tr>
+                                <td>@usersRole.UserId</td>
+                                <td>@usersRole.UserName</td>
+                                <td>@usersRole.Email</td>
+                                <td>
+                                    @if (usersRole.RoleName == "Admin")
+                                    {
+                                        <strong class="btn btn-danger btn-icon-split">@usersRole.RoleName</strong>
+                                    }
+                                    else
+                                    {
+                                        @usersRole.RoleName
+                                    }
+                                </td>
+                                
+                                <td>
+                                    <a asp-action="Details" asp-controller="User" asp-route-Id="@usersRole.UserId" class="btn btn-info btn-circle btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a onclick="openDeleteModal('@usersRole.UserId', '@usersRole.UserName')" class="btn btn-danger btn-circle btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>                                                                                            
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for delete confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa người dùng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa người dùng <strong id="userNameToDelete"></strong> không?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post">
+                    <input type="hidden" id="userIdToDelete" name="userId" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openDeleteModal(userId, userName) {
+            // Hiển thị tên người dùng trong modal
+            document.getElementById('userNameToDelete').innerText = userName;
+            document.getElementById('userIdToDelete').value = userId;
+
+            // Hiện modal
+            $('#deleteModal').modal('show');
+        }
+
+        // Thiết lập sự kiện gửi form xóa
+        document.getElementById('deleteForm').onsubmit = function () {
+            var userId = document.getElementById('userIdToDelete').value;
+            // Chuyển hướng đến phương thức xóa
+            window.location.href = '@Url.Action("DeleteConfirmed", "User")/' + userId;
+        };
+    </script>
+}
+
+
+    
